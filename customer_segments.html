@@ -14814,7 +14814,7 @@ b1AcIW6hIwAAAABJRU5ErkJggg==
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Answer:</strong> Detergents_Paper and Grocery seem to correlate.  To a lesser extent, Milk and Grocery.  And to an even lesser extent Milk and Detergents_Paper.</p>
+<p><strong>Answer:</strong> Detergents_Paper and Grocery seem to correlate.  To a lesser extent, Milk and Grocery.  And to an even lesser extent Milk and Detergents_Paper.  Grocery being correlated with Milk and Detergents_Paper may suggest that these are all sold at a Retail Grocery store, as opposed to a Restaurant.</p>
 <p>The data is not normally distributed.  Most of the datapoints lie near the origin, or are positively skewed.</p>
 
 </div>
@@ -20482,8 +20482,7 @@ Once you have performed this implementation, the dataset will be stored in the v
     <span class="c"># Concatonate the existing array of outliers to the new ones we found for this feature</span>
     <span class="n">outliers</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">outliers</span><span class="p">,</span> <span class="n">more_outliers</span><span class="p">])</span>
     
-<span class="c"># OPTIONAL: Select the indices for data points you wish to remove</span>
-
+<span class="c"># Select the indices for data points you wish to remove</span>
 <span class="c"># Find outliers on more than one feature</span>
 <span class="n">outliers</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">g</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">outliers</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">outliers</span><span class="o">.</span><span class="n">index</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">g</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span>
 
@@ -21782,10 +21781,10 @@ RU5ErkJggg==
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong> 0.7068 of the total variance is accounted for by the first and second principal component.  The first four principle components account for 0.9311.</p>
-<p>The first dimension represents high detergents &amp; paper spending, with moderate spending on milk and groceries.  We could call this "Not Food"</p>
-<p>The second dimension represents high fresh, frozen, and delicatessen spending.  We could call this "Food"</p>
-<p>The third dimension represents high fresh spending and very low delicatessen spending.  We could call this "Not Processed"</p>
-<p>The fourth dimension represents high frozen spending, and very low delicatessen spending.  We could call this "Frozen"</p>
+<p>The first dimension represents high detergents &amp; paper spending, with moderate spending on milk and groceries.  As this dimension is highly correlated with non-food items, this could represent 'Retail Grocery' customer spending.</p>
+<p>The second dimension represents high fresh, frozen, and delicatessen spending.  These would represent 'Restaurant/Dining' customer spending, as all three are related to food items.</p>
+<p>The third dimension represents very low weight on fresh spending, with high spending on Delicatessen and Frozen.  These are still primarily food items, so I would expect this to correlate to a more specialized restaurant, such as 'Deli Sandwich' spending.</p>
+<p>The fourth dimension represents high frozen spending, and very low delicatessen spending.  Again, this seems to be associated with spending on food items, so I would think this might represent another specialized restaurant.  Perhaps 'Ice Cream Shop' spending.</p>
 
 </div>
 </div>
@@ -22003,8 +22002,14 @@ RU5ErkJggg==
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Answer:</strong> KMeans is relatively easy to implement, creates hard boundaries for clusters, and generally assumes data clusters are spherical.  Gaussian Mixture Models, by contrast, do not assume hard boundaries.  Instead, they give points probabilities for belonging to various clusters.</p>
-<p>Since we ultimately want to identify distinct clusters of customers to see opportunities, the probability values provided by a Gaussian Mixture Model is less important.  Therefore, I will be using KMeans Clustering below.</p>
+<p><strong>Answer:</strong> KMeans is relatively easy to implement, creates hard boundaries for clusters, and generally assumes data clusters are spherical.  KMeans is also the faster of the two options.  Gaussian Mixture Models, by contrast, do not assume hard boundaries.  Instead, they give points probabilities for belonging to various clusters.  Because of this extra information, a Gaussian Mixture Model is slower.</p>
+<p>Since we ultimately want to identify distinct clusters of customers to see opportunities, the probability values provided by a Gaussian Mixture Model is less important.  Furthermore, since we're doing our initial analysis, the faster model is a good place to start.  Therefore, I will be using KMeans Clustering below.  If additional information looks like its necessary after KMeans, the slower GMM is an option.</p>
+<p>Sources:</p>
+<ul>
+<li><a href="http://scikit-learn.org/stable/modules/mixture.html#gmm-classifier">http://scikit-learn.org/stable/modules/mixture.html#gmm-classifier</a></li>
+<li><a href="https://www.quora.com/What-is-the-difference-between-K-means-and-the-mixture-model-of-Gaussian">https://www.quora.com/What-is-the-difference-between-K-means-and-the-mixture-model-of-Gaussian</a></li>
+<li><a href="http://www.improvedoutcomes.com/docs/WebSiteDocs/Clustering/K-Means_Clustering_Overview.htm">http://www.improvedoutcomes.com/docs/WebSiteDocs/Clustering/K-Means_Clustering_Overview.htm</a></li>
+</ul>
 
 </div>
 </div>
@@ -23224,8 +23229,8 @@ AAAA6AEhEAAAAEAPCIEAAAAAekAIBAAAANADQiAAAACAHvj/AYuJd6nL9ZqpAAAAAElFTkSuQmCC
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong></p>
-<p>A customer in Cluster 0 best corresponds to an establishment like a restaurant.  They purchase a lot of 'Fresh' and 'Frozen' goods, but very little cleaning supplies or delicatessen items.</p>
-<p>A customer in Cluster 1 best corresponds to an establishment like a hotel.  They purchase a large amount of Detergents and Paper, with some other food items for room-service, but not near as much fresh food.</p>
+<p>Segment 0 is near the 50th percentile for Fresh, near the 25th percentile for Milk, near the 25th percentile for Grocery, between the 50th and 75th percentiles for Frozen, near the 25th percentile for Detergents, and between the 25th and 50th percentile for Delicatessen.  A customer in Cluster 0 best corresponds to an establishment like a Restaurant.  They spend a lot on 'Fresh' and 'Frozen' goods, but very little detergents or grocery items.</p>
+<p>Segment 1 is near the 25th percentile for Fresh, over the 75th percentile for Milk, over the 75th percentile for Grocery, just above the 25th percentile for Frozen, well above the 75th percentile for Detergents_Paper, and just above the 50th percentile for Delicatessen.  A customer in Cluster 1 best corresponds to an establishment like a Retail Grocery Store.  They purchase a large amount of Detergents and Paper, Milk, and especially Grocery items, with some smaller amount of food items.</p>
 
 </div>
 </div>
@@ -23279,8 +23284,8 @@ Sample point 2 predicted to be in Cluster 0
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong></p>
 <p>Sample point 2 is very clearly and very obviously correctly identified with Cluster 0.  I originally claimed it would probably be a diner due to its high fresh score.  Since Cluster 0 appears to be restaurants, this was a good call.</p>
-<p>Sample points 0 and 1 are a bit trickier, as they're right on the edge of Cluster 1, near the boundry with Cluster 0.  I did originally predict that point 0 would be a Hotel, which is what I identify with cluster 1.  So that seems to be a reasonably good fit.</p>
-<p>Sample point 1 is the potential problem case here.  I originally claimed it would be something like an Ice Cream shop, due to the high frozen and high milk values.  However, it looks like I underestimated just how much paper and detergent they were using.  Perhaps it fits as a smaller Hotel as well?</p>
+<p>Sample points 0 and 1 are a bit trickier, as they're right on the edge of Cluster 1, near the boundry with Cluster 0.  I did originally predict that point 0 would be a Hotel.  However, I think I originally associated 'Grocery' more with Food than I do now.  I think if I had a better understanding of 'Grocery' at the start, I would have associated point 0 with a Grocery Store.</p>
+<p>Sample point 1 is the potential problem case here.  I originally claimed it would be something like an Ice Cream shop, due to the high frozen and high milk values.  However, it looks like I underestimated just how much paper and detergent they were using.  Perhaps it fits as a smaller Hotel?</p>
 <p>This would have been cleaner if some of my initial data points were much further to the right of our plot.</p>
 
 </div>
@@ -23321,9 +23326,15 @@ Sample point 2 predicted to be in Cluster 0
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Answer:</strong></p>
+<p><strong>Answer:</strong> 
+In order to run an A/B test here, we would want to split each of our two clusters into two random sub-groups.  Each cluster (0 and 1) would have a 'control' sub-group which would run on the old, 5 day schedule, and a 'test' sub-group, which would be switched to the new 3-day schedule.</p>
+<p>Before switching schedules, we would want to take a measure of current customer satisfaction values, to make sure we have not accidentally generated test groups that are significantly different from our control groups, especially on the relevant dimension of satisfaction.  Then, after some period of trying the new schedule on the test groups, and continuing the old schedule for the control group, we would want to take new measures of satisfaction from all four groups (cluster0-control, cluster1-control, cluster0-test, cluster1-test).  We want to test all four groups at the later time in order to account for any other changes that might have occurred that we did not instigate as part of the test that affected all groups (time of year, weather, changes in economic conditions, etc).  If the test groups have a significantly different satisfaction score than the control groups, we have a good idea of how they would respond to the change.</p>
 <p>Changing the delivery service to 3 days a week would likely create a negative impact for Cluster 0, which relies much more heavily on 'Fresh' products, and are unlikely to enjoy day old goods.</p>
 <p>Cluster 1 is less likely to be impacted, as most of their goods do not need to be fresh.  Detergent, Frozen Goods, and the like are not likely to lose much value due to an extra day's wait.  It is possible they could react positively to this change, as it would mean managing less shipments and potentially days dedicated to restocking inventory.</p>
+<p>Source:</p>
+<ul>
+<li><a href="https://vwo.com/ab-testing/">https://vwo.com/ab-testing/</a></li>
+</ul>
 
 </div>
 </div>
